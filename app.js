@@ -1,19 +1,13 @@
 const express = require("express");
 const app = express();
-const port = 3000;
-const database = require("./config/database");
+const cors = require("cors");
+const PORT = 5000 || process.env.PORT;
 
-//test database connection
-database
-  .authenticate()
-  .then(() => console.log("connected to database"))
-  .catch((err) => console.log(err));
+//Middlewares
+app.use(express.json({ extended: false }));
+app.use(cors());
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+//Defining Routes
 
-app.get("/", (req, res) => res.send("hello"));
 
-app.listen(port, () => {
-  console.log(`Horror movie app is running on port ${port}.`);
-});
+app.listen(PORT, () => console.log(`Server Running on ${PORT}`));
