@@ -1,0 +1,23 @@
+{
+  "name": "homejam",
+  "version": "1.0.0",
+  "description": "class management app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon app.js"
+  },
+  "author": "mohan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "init": "^0.1.2",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.6.4",
+    "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.9"
+  }
+}
