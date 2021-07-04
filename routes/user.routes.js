@@ -1,6 +1,8 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/user.controller");
 
+const classroomController = require("../controllers/classroom.controller");
+
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(
@@ -10,23 +12,48 @@ module.exports = function (app) {
     next();
   });
 
-  app.get("/api/test/all", controller.allAccess);
+  // app.get("/api/test/all", controller.allAccess);
 
+  // app.get(
+  //   "/api/test/teacher",
+  //   [authJwt.verifyToken, authJwt.isTeacher],
+  //   controller.teacherBoard
+  // );
+
+  // app.get(
+  //   "/api/test/student",
+  //   [authJwt.verifyToken, authJwt.isStudent],
+  //   controller.studentBoard
+  // );
+
+  // app.get(
+  //   "/api/test/admin",
+  //   [authJwt.verifyToken, authJwt.isAdmin],
+  //   controller.adminBoard
+  // );
   app.get(
-    "/api/test/teacher",
+    "/api/classroom",
     [authJwt.verifyToken, authJwt.isTeacher],
-    controller.teacherBoard
+    classroomController.list
   );
-
   app.get(
-    "/api/test/student",
-    [authJwt.verifyToken, authJwt.isStudent],
-    controller.studentBoard
+    "/api/classroom/:id",
+    [authJwt.verifyToken],
+    classroomController.getById
   );
-
-  app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
+  app.post(
+    "/api/classroom",
+    [authJwt.verifyToken, authJwt.isTeacher],
+    classroomController.add
+  );
+  app.put(
+    "/api/classroom/:id",
+    [authJwt.verifyToken, authJwt.isTeacher],
+    classroomController.update
+  );
+  app.delete(
+    "/api/classroom/:id",
+    [authJwt.verifyToken, authJwt.isTeacher],
+    classroomController.delete
   );
 };
