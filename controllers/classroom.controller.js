@@ -1,7 +1,6 @@
 const db = require("../models");
-const config = require("../config/auth.config");
-const User = db.user;
-const Role = db.role;
+const Student = db.student;
+const Classroom = db.classroom;
 
 module.exports = {
   list(req, res) {
@@ -48,7 +47,7 @@ module.exports = {
 
   add(req, res) {
     return Classroom.create({
-      class_name: req.body.class_name,
+      classname: req.body.classname,
     })
       .then((classroom) => res.status(201).send(classroom))
       .catch((error) => res.status(400).send(error));
@@ -71,7 +70,7 @@ module.exports = {
         }
         return classroom
           .update({
-            class_name: req.body.class_name || classroom.class_name,
+            classname: req.body.classname || classroom.classname,
           })
           .then(() => res.status(200).send(classroom))
           .catch((error) => res.status(400).send(error));
