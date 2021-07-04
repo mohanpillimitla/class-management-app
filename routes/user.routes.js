@@ -1,7 +1,8 @@
 const { authJwt } = require("../middleware");
-const controller = require("../controllers/user.controller");
 
 const classroomController = require("../controllers/classroom.controller");
+
+const studentController = require("../controllers/student.controller");
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -12,7 +13,6 @@ module.exports = function (app) {
     next();
   });
 
-  
   app.get(
     "/api/classroom",
     [authJwt.verifyToken, authJwt.isTeacher],
@@ -37,5 +37,27 @@ module.exports = function (app) {
     "/api/classroom/:id",
     [authJwt.verifyToken, authJwt.isTeacher],
     classroomController.delete
+  );
+
+  app.get(
+    "/api/student",
+    [authJwt.verifyToken, authJwt.isTeacher],
+    studentController.list
+  );
+  app.get("/api/student/:id", [authJwt.verifyToken], studentController.getById);
+  app.post(
+    "/api/student",
+    [authJwt.verifyToken, authJwt.isTeacher],
+    studentController.add
+  );
+  app.put(
+    "/api/student/:id",
+    [authJwt.verifyToken, authJwt.isTeacher],
+    studentController.update
+  );
+  app.delete(
+    "/api/student/:id",
+    [authJwt.verifyToken, authJwt.isTeacher],
+    studentController.delete
   );
 };
