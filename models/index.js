@@ -69,10 +69,14 @@ db.teacher.hasOne(db.user, {
   as: "user",
 });
 
-
 db.course.hasOne(db.teacher, {
   foreignKey: "teacherId",
   as: "teacher",
+});
+
+db.teacher.belongsTo(db.course, {
+  foreignKey: "courseId",
+  as: "course",
 });
 
 db.ROLES = ["student", "teacher", "admin"];

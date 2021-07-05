@@ -3,6 +3,7 @@ const db = require("../models");
 const Student = db.student;
 const Classroom = db.classroom;
 const Course = db.course;
+const Teacher = db.teacher;
 
 module.exports = {
   list(req, res) {
@@ -103,6 +104,58 @@ module.exports = {
           .destroy()
           .then(() => res.status(204).send())
           .catch((error) => res.status(400).send(error));
+      })
+      .catch((error) => res.status(400).send(error));
+  },
+
+  addWithCourseTeacher(req, res) {
+    return Teacher.create(
+      {
+        teachername: req.body.teachername,
+        userId:req.body.userId,
+        course: req.body.course,
+      },
+      {
+        include: [
+          {
+            model: Course,
+            as: "course",
+          },
+        ],
+      }
+    )
+      .then((teacher) => res.status(201).send(teacher))
+      .catch((error) => res.status(400).send(error));
+  },
+
+  addCourse(req, res) {
+    return Student.findByPk(req.body.studentId, {
+      include: [
+        {
+          model: Classroom,
+          as: "classroom",
+        },
+        {
+          model: Course,
+          as: "courses",
+        },
+      ],
+    })
+      .then((student) => {
+        if (!student) {
+          return res.status(404).send({
+            message: "Student Not Found",
+          });
+        }
+        Course.findByPk(req.body.courseId).then((course) => {
+          if (!course) {
+            return res.status(404).send({
+              message: "Course Not Found",
+            });
+          }
+          student.addCourse(course);
+          return res.status(200).send(student);
+        });
       })
       .catch((error) => res.status(400).send(error));
   },
